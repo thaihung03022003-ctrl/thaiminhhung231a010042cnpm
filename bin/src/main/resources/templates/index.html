@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Chủ - Bán Hàng Trực Tuyến</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <!-- Header & Navigation -->
+    <header class="header">
+        <nav class="navbar">
+            <a th:href="@{/}" class="logo">
+                🛒 <span>SALEAPP</span>V1
+            </a>
+            <ul class="nav-links">
+                <li><a th:href="@{/}" class="active">Trang chủ</a></li>
+                <li><a th:href="@{/products}">Tất cả</a></li>
+                <li><a th:href="@{/products(categoryId=1)}">Điện thoại di động</a></li>
+                <li><a th:href="@{/products(categoryId=2)}">Máy tính bảng</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>BÁN HÀNG TRỰC TUYẾN</h1>
+            <p>Hệ thống mua sắm thiết bị công nghệ chính hãng hàng đầu, đa dạng sản phẩm với giá ưu đãi tốt nhất.</p>
+            <a th:href="@{/products}" class="btn-primary">Khám phá sản phẩm ngay →</a>
+        </div>
+    </section>
+
+    <!-- Main Container: Categories highlight -->
+    <main class="container">
+        <h2 class="section-title">Danh Mục Nổi Bật</h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+            <!-- Category 1 Card -->
+            <div class="product-card" style="padding: 2rem; text-align: center; background: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%);">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">📱</div>
+                <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--primary-color);">Điện Thoại Di Động</h3>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Khám phá các dòng iPhone, Samsung Galaxy, Xiaomi đỉnh cao công nghệ với giá ưu đãi.</p>
+                <a th:href="@{/products(categoryId=1)}" class="btn-detail">Xem danh mục điện thoại →</a>
+            </div>
+
+            <!-- Category 2 Card -->
+            <div class="product-card" style="padding: 2rem; text-align: center; background: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%);">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">💻</div>
+                <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--primary-color);">Máy Tính Bảng</h3>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Các mẫu iPad Pro M4, iPad Air, Samsung Tab phục vụ tối đa nhu cầu học tập và sáng tạo.</p>
+                <a th:href="@{/products(categoryId=2)}" class="btn-detail">Xem danh mục máy tính bảng →</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2026 SaleAppV1 - Bài Thực Hành 2 Java Spring Boot. Bản quyền thuộc về sinh viên thực hiện.</p>
+    </footer>
+
+</body>
+</html>

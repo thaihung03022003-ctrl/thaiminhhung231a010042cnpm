@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "name": "iPhone 15 Pro 128GB",
+    "description": "Thiết kế titan cao cấp, chip Apple A17 Pro mạnh mẽ vượt trội, camera 48MP đỉnh cao, hỗ trợ cổng kết nối USB-C.",
+    "price": 25990000.0,
+    "image": "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600&auto=format&fit=crop&q=80",
+    "categoryId": 1
+  },
+  {
+    "id": 2,
+    "name": "iPhone 13 128GB",
+    "description": "Màn hình Super Retina XDR 6.1 inch sắc nét, chip A15 Bionic bền bỉ, cụm camera kép góc siêu rộng quay video 4K sắc nét.",
+    "price": 13490000.0,
+    "image": "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=600&auto=format&fit=crop&q=80",
+    "categoryId": 1
+  },
+  {
+    "id": 3,
+    "name": "Samsung Galaxy S24 Ultra",
+    "description": "Đỉnh cao trí tuệ nhân tạo Galaxy AI, camera zoom 100x 200MP, khung viền titan và bút S-Pen thông minh tích hợp.",
+    "price": 27990000.0,
+    "image": "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=600&auto=format&fit=crop&q=80",
+    "categoryId": 1
+  },
+  {
+    "id": 4,
+    "name": "Samsung Galaxy A54 5G",
+    "description": "Thiết kế trẻ trung, màn hình Super AMOLED 120Hz mượt mà, viên pin 5000mAh trâu bò và kháng nước kháng bụi chuẩn IP67.",
+    "price": 7490000.0,
+    "image": "https://images.unsplash.com/photo-1580910051074-3eb694886505?w=600&auto=format&fit=crop&q=80",
+    "categoryId": 1
+  },
+  {
+    "id": 5,
+    "name": "Xiaomi 14 5G 256GB",
+    "description": "Ống kính quang học Leica Summilux đỉnh cao, chip Snapdragon 8 Gen 3 siêu tốc, sạc nhanh HyperCharge 90W đẳng cấp.",
+    "price": 18990000.0,
+    "image": "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=600&auto=format&fit=crop&q=80",
+    "categoryId": 1
+  },
+  {
+    "id": 6,
+    "name": "iPad Pro M4 11 inch 256GB",
+    "description": "Đột phá mỏng nhẹ kỷ lục, màn hình Ultra Retina XDR OLED kép siêu rực rỡ, chip Apple M4 quyền năng chuyên nghiệp.",
+    "price": 28490000.0,
+    "image": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600&auto=format&fit=crop&q=80",
+    "categoryId": 2
+  },
+  {
+    "id": 7,
+    "name": "iPad Air 6 M2 11 inch",
+    "description": "Sức mạnh bứt phá từ vi xử lý M2, hỗ trợ Apple Pencil Pro thế hệ mới, thiết kế nhôm tái chế thân thiện môi trường.",
+    "price": 16990000.0,
+    "image": "https://images.unsplash.com/photo-1561154464-82e9adf32764?w=600&auto=format&fit=crop&q=80",
+    "categoryId": 2
+  },
+  {
+    "id": 8,
+    "name": "iPad Gen 10 64GB",
+    "description": "Thiết kế tràn viền hiện đại, nhiều màu sắc năng động, màn hình Liquid Retina 10.9 inch và cổng sạc USB-C tiện dụng.",
+    "price": 9490000.0,
+    "image": "https://images.unsplash.com/photo-1585790050230-5dd28404ccb9?w=600&auto=format&fit=crop&q=80",
+    "categoryId": 2
+  },
+  {
+    "id": 9,
+    "name": "Samsung Galaxy Tab S9 WiFi",
+    "description": "Màn hình Dynamic AMOLED 2X 120Hz sống động, kèm bút S-Pen kháng nước IP68, chip Snapdragon 8 Gen 2 đỉnh cao.",
+    "price": 15990000.0,
+    "image": "https://images.unsplash.com/photo-1589739900243-4b52cd9b104e?w=600&auto=format&fit=crop&q=80",
+    "categoryId": 2
+  },
+  {
+    "id": 10,
+    "name": "Xiaomi Pad 6 128GB",
+    "description": "Màn hình 11 inch độ phân giải 2.8K 144Hz, vi xử lý Snapdragon 870 ổn định, 4 loa vòm Dolby Atmos sống động.",
+    "price": 6890000.0,
+    "image": "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=600&auto=format&fit=crop&q=80",
+    "categoryId": 2
+  }
+]
