@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh Sách Sản Phẩm - SaleApp</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/}">🛒 SALEAPP V1</a>
+        <div class="navbar-nav ms-auto">
+            <a class="nav-link" th:href="@{/}">Trang Chủ</a>
+            <a class="nav-link active" th:href="@{/products}">Sản Phẩm</a>
+            <a class="nav-link" th:href="@{/categories}">Danh Mục</a>
+            <a class="nav-link" th:href="@{/products/add}">+ Thêm Sản Phẩm</a>
+            <a class="nav-link" th:href="@{/categories/add}">+ Thêm Danh Mục</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Danh Sách Sản Phẩm</h2>
+        <div>
+            <a th:href="@{/products/add}" class="btn btn-primary">+ Thêm Sản Phẩm Mới</a>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th style="width: 60px;">ID</th>
+                    <th style="width: 90px;" class="text-center">Hình Ảnh</th>
+                    <th>Tên Sản Phẩm</th>
+                    <th style="width: 140px;">Giá Cả</th>
+                    <th>Mô Tả</th>
+                    <th style="width: 180px;">Danh Mục</th>
+                    <th style="width: 160px;" class="text-center">Hành Động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:if="${#lists.isEmpty(products)}">
+                    <td colspan="7" class="text-center text-muted py-4">Chưa có sản phẩm nào. Hãy nhấn "+ Thêm Sản Phẩm Mới" để thêm sản phẩm!</td>
+                </tr>
+                <tr th:each="product : ${products}">
+                    <td th:text="${product.id}"></td>
+                    <td class="text-center">
+                        <img th:if="${product.image != null and !#strings.isEmpty(product.image)}" 
+                             th:src="${product.image}" 
+                             alt="Ảnh sản phẩm" 
+                             class="rounded shadow-sm" 
+                             style="width: 65px; height: 65px; object-fit: cover;" 
+                             onerror="this.src='https://placehold.co/100x100?text=No+Img'" />
+                        <span th:unless="${product.image != null and !#strings.isEmpty(product.image)}" class="badge bg-secondary">Không có ảnh</span>
+                    </td>
+                    <td class="fw-semibold" th:text="${product.name}"></td>
+                    <td class="text-danger fw-bold" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></td>
+                    <td th:text="${product.description}"></td>
+                    <td>
+                        <span class="badge bg-info text-dark" th:text="${product.category != null ? product.category.name : 'Chưa phân loại'}"></span>
+                    </td>
+                    <td class="text-center">
+                        <a th:href="@{/products/edit/{id}(id=${product.id})}" class="btn btn-warning btn-sm me-1">Sửa</a>
+                        <a th:href="@{/products/delete/{id}(id=${product.id})}" class="btn btn-danger btn-sm"
+                           onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?')">Xóa</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

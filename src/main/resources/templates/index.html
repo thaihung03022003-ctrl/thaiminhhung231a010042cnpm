@@ -16,9 +16,10 @@
             </a>
             <ul class="nav-links">
                 <li><a th:href="@{/}" class="active">Trang chủ</a></li>
-                <li><a th:href="@{/products}">Tất cả</a></li>
-                <li><a th:href="@{/products(categoryId=1)}">Điện thoại di động</a></li>
-                <li><a th:href="@{/products(categoryId=2)}">Máy tính bảng</a></li>
+                <li><a th:href="@{/products}">Sản phẩm</a></li>
+                <li><a th:href="@{/categories}">Danh mục</a></li>
+                <li><a th:href="@{/products/add}">+ Thêm sản phẩm</a></li>
+                <li><a th:href="@{/categories/add}">+ Thêm danh mục</a></li>
             </ul>
         </nav>
     </header>
@@ -28,7 +29,10 @@
         <div class="hero-content">
             <h1>BÁN HÀNG TRỰC TUYẾN</h1>
             <p>Hệ thống mua sắm thiết bị công nghệ chính hãng hàng đầu, đa dạng sản phẩm với giá ưu đãi tốt nhất.</p>
-            <a th:href="@{/products}" class="btn-primary">Khám phá sản phẩm ngay →</a>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a th:href="@{/products}" class="btn-primary">Danh sách sản phẩm →</a>
+                <a th:href="@{/categories}" class="btn-primary" style="background: #10b981;">Danh mục sản phẩm →</a>
+            </div>
         </div>
     </section>
 
@@ -36,22 +40,35 @@
     <main class="container">
         <h2 class="section-title">Danh Mục Nổi Bật</h2>
         
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
-            <!-- Category 1 Card -->
-            <div class="product-card" style="padding: 2rem; text-align: center; background: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%);">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+            <div th:each="cat : ${categories}" class="product-card" style="padding: 2rem; text-align: center; background: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%);">
                 <div style="font-size: 3rem; margin-bottom: 1rem;">📱</div>
-                <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--primary-color);">Điện Thoại Di Động</h3>
-                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Khám phá các dòng iPhone, Samsung Galaxy, Xiaomi đỉnh cao công nghệ với giá ưu đãi.</p>
-                <a th:href="@{/products(categoryId=1)}" class="btn-detail">Xem danh mục điện thoại →</a>
+                <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--primary-color);" th:text="${cat.name}">Danh mục</h3>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Quản lý và xem các sản phẩm thuộc danh mục này.</p>
+                <a th:href="@{/products}" class="btn-detail">Xem chi tiết →</a>
             </div>
+        </div>
 
-            <!-- Category 2 Card -->
-            <div class="product-card" style="padding: 2rem; text-align: center; background: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%);">
-                <div style="font-size: 3rem; margin-bottom: 1rem;">💻</div>
-                <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--primary-color);">Máy Tính Bảng</h3>
-                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Các mẫu iPad Pro M4, iPad Air, Samsung Tab phục vụ tối đa nhu cầu học tập và sáng tạo.</p>
-                <a th:href="@{/products(categoryId=2)}" class="btn-detail">Xem danh mục máy tính bảng →</a>
-            </div>
+        <!-- Featured Products with Images -->
+        <h2 class="section-title" style="margin-top: 3rem;">Sản Phẩm Nổi Bật</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+            <article class="product-card" th:each="p : ${products}" style="border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.25rem; background: #fff; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); display: flex; flex-direction: column;">
+                <div style="height: 200px; display: flex; align-items: center; justify-content: center; background: #f8fafc; border-radius: 8px; overflow: hidden; margin-bottom: 1rem;">
+                    <img th:if="${p.image != null and !#strings.isEmpty(p.image)}" 
+                         th:src="${p.image}" 
+                         th:alt="${p.name}" 
+                         style="max-height: 100%; max-width: 100%; object-fit: contain;" 
+                         onerror="this.src='https://placehold.co/400x300?text=No+Image'">
+                    <span th:unless="${p.image != null and !#strings.isEmpty(p.image)}" style="font-size: 3rem;">📦</span>
+                </div>
+                <div style="flex: 1; display: flex; flex-direction: column;">
+                    <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: 0.5rem; color: #1e293b;" th:text="${p.name}">Tên sản phẩm</h3>
+                    <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 0.75rem; flex: 1;" th:text="${p.description}">Mô tả tóm tắt sản phẩm...</p>
+                    <div style="color: #ef4444; font-weight: bold; font-size: 1.2rem; margin-bottom: 1rem;" 
+                         th:text="${#numbers.formatDecimal(p.price, 0, 'COMMA', 0, 'POINT')} + ' đ'">0 đ</div>
+                    <a th:href="@{/products}" class="btn-detail" style="display: block; text-align: center; text-decoration: none; padding: 0.5rem; background: #f1f5f9; border-radius: 6px; color: #3b82f6; font-weight: 500;">Xem trong danh sách →</a>
+                </div>
+            </article>
         </div>
     </main>
 

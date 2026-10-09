@@ -1,67 +1,123 @@
 package com.example.saleappv1.controller;
 
-import com.example.saleappv1.model.Category;
-import com.example.saleappv1.model.Product;
+import thjava.thbuoi2.models.Product;
+import com.example.saleappv1.service.CategoryService;
 import com.example.saleappv1.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.*;
+import java.util.UUID;
 
 @Controller
+@RequestMapping("/products")
 public class ProductController {
 
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/products")
-    public String products(
-            @RequestParam(required = false) Integer categoryId,
-            @RequestParam(required = false) String keyword,
-            @RequestParam(required = false) Double fromPrice,
-            @RequestParam(required = false) Double toPrice,
-            Model model) {
+    @Autowired
+    private CategoryService categoryService;
 
-        List<Product> productList = productService.filterProducts(categoryId, keyword, fromPrice, toPrice);
-        List<Category> categoryList = productService.getAllCategories();
-
-        model.addAttribute("products", productList);
-        model.addAttribute("categories", categoryList);
-        model.addAttribute("selectedCategoryId", categoryId);
-        model.addAttribute("keyword", keyword);
-        model.addAttribute("fromPrice", fromPrice);
-        model.addAttribute("toPrice", toPrice);
-
-        // Tên danh mục đang lọc (nếu có)
-        String currentCategoryName = "Tất cả sản phẩm";
-        if (categoryId != null && categoryId > 0) {
-            Category cat = productService.getCategoryById(categoryId);
-            if (cat != null) {
-                currentCategoryName = cat.getName();
-            }
-        }
-        model.addAttribute("currentCategoryName", currentCategoryName);
-
-        return "products";
+    // 1. Hiển thị danh sách sản phẩm
+    @GetMapping
+    public String showProductList(Model model) {
+        model.addAttribute("products", productService.getAllProducts());
+        return "products/products-list";
     }
 
-    @GetMapping("/products/{productId}")
-    public String productDetail(@PathVariable Integer productId, Model model) {
-        Product product = productService.getProductById(productId);
-        if (product == null) {
-            model.addAttribute("errorMessage", "Không tìm thấy sản phẩm có mã: " + productId);
-            return "redirect:/products";
+    // 2. Hiển thị form thêm mới
+    @GetMapping("/add")
+    public String showAddForm(Model model) {
+        model.addAttribute("product", new Product());
+        model.addAttribute("categories", categoryService.getAllCategories());
+        return "products/add-product";
+    }
+
+    // 3. Xử lý thêm mới kèm tải lên hình ảnh
+    @PostMapping("/add")
+    public String addProduct(@Valid Product product, BindingResult result,
+                             @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
+                             Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("categories", categoryService.getAllCategories());
+            return "products/add-product";
         }
 
-        Category category = productService.getCategoryById(product.getCategoryId());
-        model.addAttribute("product", product);
-        model.addAttribute("categoryName", category != null ? category.getName() : "Khác");
-        model.addAttribute("categories", productService.getAllCategories());
+        if (imageFile != null && !imageFile.isEmpty()) {
+            try {
+                String fileName = saveImageFile(imageFile);
+                product.setImage("/uploads/" + fileName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
-        return "product-detail";
+        productService.addProduct(product);
+        return "redirect:/products";
+    }
+
+    // 4. Hiển thị form sửa
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable("id") Long id, Model model) {
+        Product product = productService.getProductById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID sản phẩm không hợp lệ: " + id));
+        model.addAttribute("product", product);
+        model.addAttribute("categories", categoryService.getAllCategories());
+        return "products/update-product";
+    }
+
+    // 5. Xử lý cập nhật kèm tải lên hình ảnh mới
+    @PostMapping("/update/{id}")
+    public String updateProduct(@PathVariable("id") Long id, @Valid Product product, BindingResult result,
+                                @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
+                                Model model) {
+        if (result.hasErrors()) {
+            product.setId(id);
+            model.addAttribute("categories", categoryService.getAllCategories());
+            return "products/update-product";
+        }
+
+        if (imageFile != null && !imageFile.isEmpty()) {
+            try {
+                String fileName = saveImageFile(imageFile);
+                product.setImage("/uploads/" + fileName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        product.setId(id);
+        productService.updateProduct(product);
+        return "redirect:/products";
+    }
+
+    // 6. Xử lý xóa
+    @GetMapping("/delete/{id}")
+    public String deleteProduct(@PathVariable("id") Long id) {
+        productService.deleteProductById(id);
+        return "redirect:/products";
+    }
+
+    private String saveImageFile(MultipartFile file) throws IOException {
+        Path uploadPath = Paths.get("uploads");
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+        String originalFilename = StringUtils.cleanPath(file.getOriginalFilename() != null ? file.getOriginalFilename() : "image.jpg");
+        String fileName = UUID.randomUUID().toString() + "_" + originalFilename;
+        try (InputStream inputStream = file.getInputStream()) {
+            Path filePath = uploadPath.resolve(fileName);
+            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+        }
+        return fileName;
     }
 }

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cập Nhật Sản Phẩm - SaleApp</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/}">🛒 SALEAPP V1</a>
+        <div class="navbar-nav ms-auto">
+            <a class="nav-link" th:href="@{/}">Trang Chủ</a>
+            <a class="nav-link active" th:href="@{/products}">Sản Phẩm</a>
+            <a class="nav-link" th:href="@{/categories}">Danh Mục</a>
+            <a class="nav-link" th:href="@{/products/add}">+ Thêm Sản Phẩm</a>
+            <a class="nav-link" th:href="@{/categories/add}">+ Thêm Danh Mục</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-2" style="max-width: 650px;">
+    <div class="card shadow-sm">
+        <div class="card-header bg-warning text-dark">
+            <h4 class="mb-0">Cập Nhật Sản Phẩm</h4>
+        </div>
+        <div class="card-body p-4">
+            <form th:action="@{/products/update/{id}(id=${product.id})}" th:object="${product}" method="post" enctype="multipart/form-data">
+                <input type="hidden" th:field="*{id}" />
+
+                <div class="mb-3">
+                    <label for="name" class="form-label fw-bold">Tên sản phẩm: <span class="text-danger">*</span></label>
+                    <input type="text" id="name" th:field="*{name}" class="form-control" required>
+                    <div class="text-danger mt-1" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="price" class="form-label fw-bold">Giá cả (VNĐ): <span class="text-danger">*</span></label>
+                    <input type="number" step="1000" id="price" th:field="*{price}" class="form-control" required>
+                    <div class="text-danger mt-1" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="category" class="form-label fw-bold">Danh mục: <span class="text-danger">*</span></label>
+                    <select id="category" th:field="*{category}" class="form-select">
+                        <option value="">-- Chọn danh mục --</option>
+                        <option th:each="cat : ${categories}" 
+                                th:value="${cat.id}" 
+                                th:text="${cat.name}" 
+                                th:selected="${product.category != null and cat.id == product.category.id}"></option>
+                    </select>
+                </div>
+
+                <div class="mb-3" th:if="${product.image != null and !#strings.isEmpty(product.image)}">
+                    <label class="form-label fw-bold d-block">Hình ảnh hiện tại:</label>
+                    <img th:src="${product.image}" alt="Ảnh sản phẩm" class="rounded shadow-sm" style="max-height: 120px; object-fit: contain;">
+                </div>
+
+                <div class="mb-3">
+                    <label for="imageFile" class="form-label fw-bold">Chọn hình ảnh mới (từ máy tính):</label>
+                    <input type="file" id="imageFile" name="imageFile" class="form-control" accept="image/*">
+                    <small class="text-muted">Chọn ảnh mới nếu muốn thay đổi ảnh hiện tại</small>
+                </div>
+
+                <div class="mb-3">
+                    <label for="image" class="form-label fw-bold">Hoặc dán URL ảnh trực tuyến:</label>
+                    <input type="text" id="image" th:field="*{image}" class="form-control" placeholder="https://example.com/hinh-anh.jpg">
+                </div>
+
+                <div class="mb-3">
+                    <label for="description" class="form-label fw-bold">Mô tả:</label>
+                    <textarea id="description" th:field="*{description}" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="d-flex justify-content-end gap-2">
+                    <a th:href="@{/products}" class="btn btn-secondary">Hủy</a>
+                    <button type="submit" class="btn btn-primary">Lưu Thay Đổi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
